@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# IDE settings
+.vscode/*
+.vscode
+
+# Specifics
+getSources.sh
+DNC

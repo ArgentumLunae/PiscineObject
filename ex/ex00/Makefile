@@ -6,13 +6,13 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/20 13:49:24 by mteerlin      #+#    #+#                  #
-#    Updated: 2025/06/09 19:02:56 by mteerlin      ########   odam.nl          #
+#    Updated: 2025/06/12 00:11:09 by argentumlun   ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 include sources.mk
 
-NAME = DNC
+NAME = ex00
 OBJ_DIR = obj
 VPATH := $(subst $(" "),:,$(shell find srcs -type d))
 OBJ_FILES = $(addprefix $(OBJ_DIR)/, $(notdir $(patsubst %.cpp, %.o, $(SRC_FILES))))

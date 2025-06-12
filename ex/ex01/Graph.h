@@ -6,7 +6,7 @@
 /*   By: argentumlunae <argentumlunae@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/06/11 22:43:27 by argentumlun   #+#    #+#                 */
-/*   Updated: 2025/06/11 23:48:49 by argentumlun   ########   odam.nl         */
+/*   Updated: 2025/06/13 00:11:14 by argentumlun   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,10 @@
 
 struct Vector2
 {
-    private:
+    public:
         float x;
         float y;
 
-    public:
         Vector2() : x(0.0f), y(0.0f) {}
         Vector2(const float &a, const float &b) : x(a), y(b) {}
         Vector2(const Vector2 &src) 
@@ -33,8 +32,6 @@ struct Vector2
             p_os << "{" << (size_t)vect2.x << "," << (size_t)vect2.y << "}";
 			return (p_os);
         }
-
-        friend class Graph;
 };
 
 class Graph

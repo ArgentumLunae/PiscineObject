@@ -1,8 +1,9 @@
 #include <iostream>
-#include <vector>
+#include <map>
 #include <limits>
 
 #define FEE_PERCENTAGE 5
+#define MAX_ACCOUNTS   999999999
 
 #define ACC_NOTFOUND "Account not found in bank system."
 
@@ -27,43 +28,36 @@ struct Bank
 		};
 
 		int liquidity;
-		std::vector<Account *> clientAccounts;
+		std::map<int, Account *> clientAccounts;
 
 		int generateID()
 		{
 			int id = 0;
 			while (true)
 			{
-				bool uniqueID = true;
-				for (auto &clientAccount : clientAccounts)
-				{
-					if (id == clientAccount->id)
-					{
-						uniqueID = false;
-						break;
-					}
-				}
-				if (uniqueID)
+				if (!findAccount(id))
 					break;
-			}
-			if (id < 0)
-			{
-				std::cerr << "Account limit (" << __INT_MAX__ << ") reached." << std::endl << "Remove accounts before adding more." << std::endl;
-				return -1;
+				if (id > MAX_ACCOUNTS || id < 0)
+				{
+					std::cerr << "Account limit (" << MAX_ACCOUNTS << ") reached." << std::endl << "Remove accounts before adding more." << std::endl;
+					return -1;
+				}
+				id++;
 			}
 			return id;
 		}
 
-		Account * findAccount(int &id)
+		Account *findAccount(const int &id)
 		{
-			for (std::vector<Account *>::iterator iter = clientAccounts.begin(); iter != clientAccounts.end(); iter++)
-			{
-				if ((*iter)->id == id)
-				{
-					return *iter;
-				}
-			}
+			std::map<int, Account*>::iterator iter = findAccountIter(id);
+			if (iter != clientAccounts.end())
+				return (*iter).second;
 			return NULL;
+		}
+
+		std::map<int, Account*>::iterator findAccountIter(const int &id)
+		{
+			return clientAccounts.find(id);
 		}
 
 	public:
@@ -76,28 +70,30 @@ struct Bank
 		~Bank()
 		{
 			for (auto clientAccount : clientAccounts)
-				delete clientAccount;
+				delete clientAccount.second;
 		}
 
 		const int&	createAccount()
 		{
+			static int badReturn = -1;
 			Account	*newAccount = new Account();
-			newAccount->id = generateID();
+			int newID = generateID();
+			if (newID < 0)
+				return badReturn;
+			newAccount->id = newID;
 			newAccount->value = 0;
-			clientAccounts.push_back(newAccount);
+			clientAccounts.insert({newID, newAccount});
 			return newAccount->id;
 		}
 
 		void	deleteAccount(int id)
 		{
-			for (std::vector<Account *>::iterator iter = clientAccounts.begin(); iter != clientAccounts.end(); iter++)
+			std::map<int, Account*>::iterator iter = findAccountIter(id);
+			if (iter != clientAccounts.end())
 			{
-				if ((*iter)->id == id)
-				{
-					clientAccounts.erase(iter);
-					delete *iter;
-					return ;
-				}
+				clientAccounts.erase(iter);
+				delete (*iter).second;
+				return ;
 			}
 		}
 
@@ -126,6 +122,7 @@ struct Bank
 			if (withdrawalValue > withdrawalAccount->value)
 			{
 				std::cout << "Withdrawal failed: Not enough funds in account." << std::endl;
+				return false;
 			}
 			withdrawalAccount->value -= withdrawalValue;
 			return true;
@@ -152,46 +149,41 @@ struct Bank
 		friend std::ostream& operator << (std::ostream& p_os, const Bank& p_bank)
 		{
 			p_os << "Bank informations : " << std::endl;
-			p_os << "Liquidity : " << p_bank.liquidity << std::endl;
+			p_os << "\tLiquidity : " << p_bank.liquidity << std::endl;
+			p_os << "\tAccounts:" << std::endl;
 			for (auto &clientAccount : p_bank.clientAccounts)
-	        	p_os << *clientAccount << std::endl;
+	        	p_os << "\t\t" << *clientAccount.second << std::endl;
 			return (p_os);
 		}
 };
 
 int main()
 {
-	//Account accountA = Account();
-	// accountA.id = 0;
-	// accountA.value = 100;
-	
-	//Account accountB = Account();
-	// accountB.id = 1;
-	// accountB.value = 100;
+	// ACCOUNTS CAN NO LONGER BE INSTANCED OUTSIDE OF BANK
+	// UNCOMMENT BELOW TO SHOW
+	// Account accountA = Account();
 	
 	Bank bank = Bank();
-	int accountA_ID = bank.createAccount();
+	const int accountA_ID = bank.createAccount();
 	bank.depositToAccount(accountA_ID, 100);
+	std::cout << bank << std::endl;
+
+	bank.loanToAccount(accountA_ID, 10);	// not enough liquidity
 	bank.loanToAccount(accountA_ID, 5);
 	bank.withdrawFromAccount(accountA_ID, 100);
-	// bank.liquidity = 999;
-	// bank.clientAccounts.push_back(&accountA);
-	// bank.clientAccounts.push_back(&accountB);
 
-	// bank.liquidity -= 200;
-	// accountA.value += 400;
+	const int accountB_ID = bank.createAccount();
+	bank.depositToAccount(accountB_ID, 250);
 
-	//Account& accountC = bank.createAccount();
-	//std::cout << &accountC << std::endl;
+	int accountC_ID = bank.createAccount();
+	bank.depositToAccount(accountC_ID, 254486200);
 
-	std::cout << "Account : " << std::endl;
-	// std::cout << accountA << std::endl;
-	// std::cout << accountB << std::endl;
-	// std::cout << accountC << std::endl;
+	accountC_ID = 5;		//careful not to lose your account ID
+	bank.withdrawFromAccount(accountC_ID, 5000);
 
-	std::cout << " ----- " << std::endl;
+	bank.depositToAccount(accountA_ID, 5000);
+	bank.withdrawFromAccount(accountA_ID, 6);
 
-	std::cout << "Bank : " << std::endl;
 	std::cout << bank << std::endl;
 
 	bank.deleteAccount(accountA_ID);

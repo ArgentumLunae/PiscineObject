@@ -6,7 +6,7 @@
 /*   By: argentumlunae <argentumlunae@student.co      +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/06/11 22:59:34 by argentumlun   #+#    #+#                 */
-/*   Updated: 2025/06/11 23:47:51 by argentumlun   ########   odam.nl         */
+/*   Updated: 2025/06/13 00:07:08 by argentumlun   ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void Graph::addVector (const float &xPos, const float &yPos)
 {
     Vector2 *newVect = new Vector2(xPos, yPos);
     points.push_back(newVect);
-        if ((size_t)xPos >= (size_t)size.x)
+        if ((int)xPos >= (int)size.x)
     size.x = xPos + 1.0f;
-        if ((size_t)yPos >= (size_t)size.y)
+        if ((int)yPos >= (int)size.y)
     size.y = yPos + 1.0f;
 }
 
@@ -35,14 +35,15 @@ void Graph::addVector (const Vector2 &cpyVect)
 {
     Vector2 *newVect = new Vector2(cpyVect);
     points.push_back(newVect);
-    if ((size_t)newVect->x >= (size_t)size.x)
+    if ((int)newVect->x >= (int)size.x)
         size.x = newVect->x + 1.0f;
-    if ((size_t)newVect->y >= (size_t)size.y)
+    if ((int)newVect->y >= (int)size.y)
         size.y = newVect->y + 1.0f;
 }
 
 void Graph::displayGraph(void)
 {
+    std::cout << "Graph size: " << size << std::endl;
     std::cout << "Display Graph:" << std::endl;
     for (int i = (int)size.y; i >= 0; i--)
     {

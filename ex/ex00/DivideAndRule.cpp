@@ -18,13 +18,16 @@ struct Bank
 
 			public:
 				Account() :	id(-1), value(0) {}
-				const int &getID() const { return id;}
+				const int	&getID() const { return id; }
+				const int	&getValue() const { return value; }
+				void		setID(const int &newID) { id = newID; }
+				void		setValue(const int &newValue) { value = newValue; }
+
 				friend std::ostream& operator << (std::ostream& p_os, const Account& p_account)
 				{
 					p_os << "[" << p_account.id << "] - [" << p_account.value << "]";
 					return (p_os);
 				}
-				friend struct Bank;
 		};
 
 		int liquidity;
@@ -80,10 +83,9 @@ struct Bank
 			int newID = generateID();
 			if (newID < 0)
 				return badReturn;
-			newAccount->id = newID;
-			newAccount->value = 0;
+			newAccount->setID(newID);
 			clientAccounts.insert({newID, newAccount});
-			return newAccount->id;
+			return newAccount->getID();
 		}
 
 		void	deleteAccount(int id)
@@ -104,10 +106,10 @@ struct Bank
 			{
 				int transferFee = depositValue * FEE_PERCENTAGE / 100;
 				liquidity += transferFee;
-				depositAccount->value += (depositValue - transferFee);
+				depositAccount->setValue(depositAccount->getValue() + (depositValue - transferFee));
 				return true;
 			}
-			std::cout << "Depostit failed: " << ACC_NOTFOUND << std::endl;
+			std::cout << "Depostit failed: " << ACC_NOTFOUND <<  " (ID:" << id << ')'  << std::endl;
 			return false;
 		}
 
@@ -116,15 +118,15 @@ struct Bank
 			Account *withdrawalAccount = findAccount(id);
 			if (!withdrawalAccount)
 			{
-				std::cout << "Withdrawal failed: " << ACC_NOTFOUND << std::endl;
+				std::cout << "Withdrawal failed: " << ACC_NOTFOUND <<  " (ID:" << id << ')' <<  std::endl;
 				return false;
 			}
-			if (withdrawalValue > withdrawalAccount->value)
+			if (withdrawalValue > withdrawalAccount->getValue())
 			{
 				std::cout << "Withdrawal failed: Not enough funds in account." << std::endl;
 				return false;
 			}
-			withdrawalAccount->value -= withdrawalValue;
+			withdrawalAccount->setValue(withdrawalAccount->getValue() - withdrawalValue);
 			return true;
 		}
 
@@ -138,7 +140,7 @@ struct Bank
 			Account *loanAccount = findAccount(id);
 			if (loanAccount)
 			{
-				loanAccount->value += loanValue;
+				loanAccount->setValue(loanAccount->getValue() + loanValue);
 				liquidity -= loanValue;
 				return true;
 			}
@@ -167,26 +169,30 @@ int main()
 	const int accountA_ID = bank.createAccount();
 	bank.depositToAccount(accountA_ID, 100);
 	std::cout << bank << std::endl;
-
+	
+	
 	bank.loanToAccount(accountA_ID, 10);	// not enough liquidity
 	bank.loanToAccount(accountA_ID, 5);
 	bank.withdrawFromAccount(accountA_ID, 100);
-
+	
 	const int accountB_ID = bank.createAccount();
 	bank.depositToAccount(accountB_ID, 250);
-
+	
 	int accountC_ID = bank.createAccount();
 	bank.depositToAccount(accountC_ID, 254486200);
 
+	std::cout << bank << std::endl;
+	
+	bank.deleteAccount(accountB_ID);
 	accountC_ID = 5;		//careful not to lose your account ID
 	bank.withdrawFromAccount(accountC_ID, 5000);
-
 	bank.depositToAccount(accountA_ID, 5000);
 	bank.withdrawFromAccount(accountA_ID, 6);
 
+	bank.depositToAccount(accountB_ID, 12);
+
 	std::cout << bank << std::endl;
 
-	bank.deleteAccount(accountA_ID);
 
 	return (0);
 }

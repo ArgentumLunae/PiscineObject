@@ -1,17 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   IV1.hpp                                            :+:    :+:            */
+/*   Worker.hpp                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/08/08 13:47:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2025/08/08 15:26:48 by mteerlin      ########   odam.nl         */
+/*   Updated: 2025/08/29 16:37:31 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef WORKER_HPP
+# define WORKER_HPP
+
 #include <iostream>
-#include "IV2.hpp"
+#include <set>
+#include "Tool.hpp"
+
+class Tool;
+class Shovel;
 
 struct Position
 {
@@ -45,42 +52,24 @@ struct Statistic
 class Worker
 {
 	private:
+		std::string _name;
 		Position	_pos;
 		Statistic	_stat;
 
-		//IV2
-		Shovel		*_shovel;
+		std::set<Tool>	_tools;
 
 	public:
-		Worker() : _shovel(NULL) { std::cout << "Worker - Default construction" << std::endl; };
-		Worker(Position &pos, Statistic const &stat) : _pos(pos), _stat(stat), _shovel(NULL)
-		{
-			std::cout << "Worker - Parametric construction" << std::endl;
-			std::cout << "\tPosition:  " << pos << std::endl;
-			std::cout << "\tStatistic: " << stat << std::endl;
-		}
-		~Worker() { std::cout << "Worker - Default deconstruction" << std::endl; };
+		Worker();
+		Worker(Position &pos, Statistic const &stat);
+		~Worker();
 
-		void set_position(Position const &pos)
-		{
-			_pos.x = pos.x;
-			_pos.y = pos.y;
-			_pos.z = pos.z;
-			std::cout << "Worker: set_position - " << _pos << std::endl;
-		};
-		void set_statistic(Statistic const &stat)
-		{
-			_stat.level = stat.level;
-			_stat.experience = stat.experience;
-			std::cout << "Worker: set_statistic - " <<_stat << std::endl;
-		};
-
-		//IV2
-		void use_shovel()
-		{
-			if (_shovel == NULL)
-				std::cout << "Worker - Has no shovel" << std::endl;
-			else if (_shovel->use() <= 0)
-				_shovel = NULL;				
-		}
+		Shovel& get_shovel() const;
+		void set_position(Position const &pos);
+		void set_statistic(Statistic const &stat);
+		void take_shovel(Shovel &shovel);
+		void drop_tool(Tool &tool);
+		void use_shovel();
+		void use_hammer();
 };
+
+#endif

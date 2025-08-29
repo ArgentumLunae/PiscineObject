@@ -1,1 +1,4 @@
-SRC_FILES := main.cpp
+SRC_FILES := ./main.cpp \
+			./Shovel.cpp \
+			./Worker.cpp \
+			./Tool.cpp

@@ -1,38 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   Tool.hpp                                           :+:    :+:            */
+/*   ToolTypes.h                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2025/08/29 15:25:46 by mteerlin      #+#    #+#                 */
-/*   Updated: 2025/11/14 16:08:28 by mteerlin      ########   odam.nl         */
+/*   Created: 2025/11/14 14:11:37 by mteerlin      #+#    #+#                 */
+/*   Updated: 2025/11/14 14:12:12 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TOOL_HPP
-# define TOOL_HPP
-# include "Worker.hpp"
+#ifndef TOOLTYPES_HPP
+# define TOOLTYPES_HPP
 
-class Worker;
-
-class Tool
+enum eToolTypes
 {
-	protected:
-		Worker*		_heldBy = NULL;
-		std::string	_type;
-		int			_numberOfUses;
-		
-		public:
-		Tool();
-		virtual ~Tool();
-
-		std::string get_type();
-		Worker *get_holder();
-		void set_holder(Worker *worker);
-
-		void dropped(Worker &worker);
-		virtual int use() = 0;
+	TT_SHOVEL,
+	TT_HAMMER
 };
 
 #endif

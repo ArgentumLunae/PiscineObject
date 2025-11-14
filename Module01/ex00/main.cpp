@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/08/08 14:12:14 by mteerlin      #+#    #+#                 */
-/*   Updated: 2025/11/07 12:26:22 by mteerlin      ########   odam.nl         */
+/*   Updated: 2025/11/14 16:19:56 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,27 +33,28 @@ int main(int argc, char* argv[])
 		stat.experience += 864;
 
 		Worker WS2(pos, stat);
-		std::cout << std::endl << std::endl;
 	}
 
 	//IV2
 	if (argc == 1 || argv[1][0] == '2')
 	{
+		if (argc == 1) {std::cout << std::endl << std::endl;}
 		std::cout << "\tIV2 : " << std::endl;
 		Position pos = { 1, 2, 3 };
 		Statistic stat = {10, 19863};
 		Shovel Steve;
 
 		Worker DirtDestroyer9001;
-		Worker SnowSlinger;
 		DirtDestroyer9001.set_position(pos);
 		DirtDestroyer9001.set_statistic(stat);
 		DirtDestroyer9001.take_tool(Steve);
 		DirtDestroyer9001.use_shovel();
-		SnowSlinger.set_name("Bartholomew Kuma");
-		SnowSlinger.take_tool(Steve);
+		{
+			Worker SnowSlinger;
+			SnowSlinger.set_name("Bartholomew Kuma");
+			SnowSlinger.take_tool(Steve);
+		}
 		DirtDestroyer9001.use_shovel();
-		SnowSlinger.~Worker();
 		DirtDestroyer9001.use_shovel();
 		DirtDestroyer9001.take_tool(Steve);
 		DirtDestroyer9001.use_shovel();
@@ -62,24 +63,41 @@ int main(int argc, char* argv[])
 		DirtDestroyer9001.use_shovel();
 		DirtDestroyer9001.use_shovel();
 		DirtDestroyer9001.use_shovel();
-		std::cout << std::endl << std::endl;
 	}
-
 	//IV3
 	if (argc == 1 || argv[1][0] == '3')
 	{
-		std::cout << "\tIV2 : " << std::endl;
-		Position pos = { 1, 2, 3 };
-		Statistic stat = {10, 19863};
+		if (argc == 1) {std::cout << std::endl << std::endl;}
+		std::cout << "\tIV3 : " << std::endl;
 		Shovel Steve;
 		Hammer Charles;
 
 		Worker workerA;
 		Worker workerB;
-		
+
+		workerA.set_name("Jimbob");
+		workerB.set_name("Bobert");
+		workerA.take_tool(Steve);
+		workerA.take_tool(Charles);
+
+		workerB.take_tool(Steve);
+		workerB.take_tool(Charles);
 	}
 
+	//IV4
 	if (argc == 1 || argv[1][0] == '4')
-		return -1;
+	{
+		if (argc == 1) {std::cout << std::endl << std::endl;}
+		std::cout << "\tIV3 : " << std::endl;
+
+		std::set<eToolTypes> workshopReqs1;
+		workshopReqs1.insert(TT_HAMMER);
+
+		Workshop workshop1(workshopReqs1);
+		Workshop workshop2;
+		
+		workshop2.add_requirement(TT_SHOVEL);
+		workshop2.add_requirement(TT_HAMMER);
+	}
 	return 0;
 }

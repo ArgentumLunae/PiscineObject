@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/08/08 13:47:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2025/10/10 15:38:50 by mteerlin      ########   odam.nl         */
+/*   Updated: 2025/11/14 16:11:24 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 #include <list>
 #include "Tool.hpp"
 #include "Workshop.hpp"
+#include "ToolTypes.h"
 
 class Tool;
 class Shovel;
 class Workshop;
-
 struct Position
 {
 	int x;
@@ -73,9 +73,10 @@ class Worker
 		std::string get_name() const;
 		void set_statistic(Statistic const &stat);
 		void take_tool(Tool &tool);
-		void drop_tool(Tool &tool);
+		void drop_tool(Tool *tool);
 		void use_shovel();
 		void use_hammer();
+		void work(std::set<eToolTypes> requiredTools);
 
 		template <typename T>
 		T* get_tool()
@@ -88,7 +89,7 @@ class Worker
 			{
 				if (dynamic_cast<T*>(*iter) != NULL)
 				{
-					std::cout << _name << " has correct tool." << std::endl;
+					std::cout << "\t\t" << _name << " has correct tool." << std::endl;
 					return dynamic_cast<T*>(*iter);
 				}
 			}

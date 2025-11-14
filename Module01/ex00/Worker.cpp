@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/08/29 14:44:19 by mteerlin      #+#    #+#                 */
-/*   Updated: 2025/11/07 12:30:21 by mteerlin      ########   odam.nl         */
+/*   Updated: 2025/11/14 16:09:13 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,18 @@ Worker::Worker(Position &pos, Statistic const &stat) : _pos(pos), _stat(stat)
 
 Worker::~Worker()
 {
-	std::list<Tool*>::iterator begin = _tools.begin();
-	std::list<Tool*>::iterator end = _tools.end();
-	for(std::list<Tool*>::iterator iter = begin; iter != end; iter++)
-	{
-		if (*iter != NULL)
-		{
-			std::cout << "Deconstructor - tool drop." << std::endl;
-			this->drop_tool(**iter);
-		}
-		else
-			std::cout << "How did this item become NULL?" << std::endl;
-	}
 	std::cout << "\t" << _name << " - Default deconstruction" << std::endl;
+	if (!_tools.empty())
+	{
+		std::list<Tool*>::iterator begin = _tools.begin();
+		std::list<Tool*>::iterator end = _tools.end();
+		for(std::list<Tool*>::iterator iter = begin; iter != end; iter++)
+		{
+			if (*iter != NULL)
+				(*iter)->dropped(*this);
+		}
+		_tools.clear();
+	}
 };
 
 std::list<Tool*> Worker::get_tools() const
@@ -72,15 +71,19 @@ void Worker::set_statistic(Statistic const &stat)
 
 void Worker::take_tool(Tool &tool)
 {
-	std::cout << "\t" << _name << " has taken the shovel" << std::endl;
-	tool.picked_up(*this);
+	std::cout << "\t" << _name << " has taken the " << tool.get_type() << std::endl;
+	Worker *previous = tool.get_holder();
+	if (previous != NULL)
+		previous->drop_tool(&tool);
 	_tools.push_back(&tool);
+	tool.set_holder(this);
 }
 
-void Worker::drop_tool(Tool &tool)
+void Worker::drop_tool(Tool *tool)
 {
-	std::cout << "\t" << _name << " has dropped the " << tool.get_type() << std::endl;
-	_tools.remove(&tool);
+	std::cout << "\t" << _name << " has dropped the " << tool->get_type() << std::endl;
+	tool->dropped(*this);
+	_tools.remove(tool);
 }
 
 void Worker::use_shovel()
@@ -116,5 +119,24 @@ void Worker::use_hammer()
 		}
 		else
 			std::cout << "\t" << _name << " doesn't have a shovel" << std::endl;
+	}
+}
+
+void Worker::work(std::set<eToolTypes> requiredTools)
+{
+	std::set<eToolTypes>::iterator begin = requiredTools.begin();
+	std::set<eToolTypes>::iterator end = requiredTools.end();
+	
+	std::cout << "\t" << _name << " starts their workday." << std::endl;
+	for (std::set<eToolTypes>::iterator iter = begin; begin != end; begin++)
+	{
+		switch (*iter)
+		{
+		case TT_SHOVEL: use_shovel(); break;
+		case TT_HAMMER: use_hammer(); break;
+		default:
+			std::cout << "Unrecognised type of tool required" << std::endl;
+			break;
+		}
 	}
 }

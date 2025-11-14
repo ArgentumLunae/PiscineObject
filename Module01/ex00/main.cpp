@@ -6,16 +6,19 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/08/08 14:12:14 by mteerlin      #+#    #+#                 */
-/*   Updated: 2025/08/29 16:22:56 by mteerlin      ########   odam.nl         */
+/*   Updated: 2025/11/07 12:26:22 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Worker.hpp"
 #include "Shovel.hpp"
+#include "Hammer.hpp"
+#include "Workshop.hpp"
 
-int main(void)
+int main(int argc, char* argv[])
 {
 	//IV1
+	if (argc == 1 || argv[1][0] == '1')
 	{
 		std::cout << "\tIV1 : " << std::endl;
 		Position pos = { 1, 2, 3 };
@@ -30,9 +33,11 @@ int main(void)
 		stat.experience += 864;
 
 		Worker WS2(pos, stat);
+		std::cout << std::endl << std::endl;
 	}
 
 	//IV2
+	if (argc == 1 || argv[1][0] == '2')
 	{
 		std::cout << "\tIV2 : " << std::endl;
 		Position pos = { 1, 2, 3 };
@@ -43,54 +48,38 @@ int main(void)
 		Worker SnowSlinger;
 		DirtDestroyer9001.set_position(pos);
 		DirtDestroyer9001.set_statistic(stat);
-		DirtDestroyer9001.take_shovel(Steve);
+		DirtDestroyer9001.take_tool(Steve);
 		DirtDestroyer9001.use_shovel();
-		SnowSlinger.take_shovel(Steve);
+		SnowSlinger.set_name("Bartholomew Kuma");
+		SnowSlinger.take_tool(Steve);
 		DirtDestroyer9001.use_shovel();
 		SnowSlinger.~Worker();
 		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.take_shovel(Steve);
+		DirtDestroyer9001.take_tool(Steve);
 		DirtDestroyer9001.use_shovel();
 		DirtDestroyer9001.use_shovel();
 		DirtDestroyer9001.use_shovel();
 		DirtDestroyer9001.use_shovel();
 		DirtDestroyer9001.use_shovel();
 		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
+		std::cout << std::endl << std::endl;
 	}
 
 	//IV3
+	if (argc == 1 || argv[1][0] == '3')
 	{
 		std::cout << "\tIV2 : " << std::endl;
 		Position pos = { 1, 2, 3 };
 		Statistic stat = {10, 19863};
 		Shovel Steve;
+		Hammer Charles;
 
-		Worker DirtDestroyer9001;
-		Worker SnowSlinger;
-		DirtDestroyer9001.set_position(pos);
-		DirtDestroyer9001.set_statistic(stat);
-		DirtDestroyer9001.take_shovel(Steve);
-		DirtDestroyer9001.use_shovel();
-		SnowSlinger.take_shovel(Steve);
-		DirtDestroyer9001.use_shovel();
-		SnowSlinger.~Worker();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.take_shovel(Steve);
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
-		DirtDestroyer9001.use_shovel();
+		Worker workerA;
+		Worker workerB;
+		
 	}
+
+	if (argc == 1 || argv[1][0] == '4')
+		return -1;
+	return 0;
 }

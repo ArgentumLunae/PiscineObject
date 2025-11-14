@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/08/08 13:47:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2025/08/29 16:37:31 by mteerlin      ########   odam.nl         */
+/*   Updated: 2025/10/10 15:38:50 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 # define WORKER_HPP
 
 #include <iostream>
-#include <set>
+#include <list>
 #include "Tool.hpp"
+#include "Workshop.hpp"
 
 class Tool;
 class Shovel;
+class Workshop;
 
 struct Position
 {
@@ -52,24 +54,46 @@ struct Statistic
 class Worker
 {
 	private:
-		std::string _name;
+		std::string _name = "Worker";
 		Position	_pos;
 		Statistic	_stat;
 
-		std::set<Tool>	_tools;
-
+		std::list<Tool*>		_tools;
+		std::set<Workshop*>	_workshops;
+	
 	public:
+	
 		Worker();
 		Worker(Position &pos, Statistic const &stat);
 		~Worker();
 
-		Shovel& get_shovel() const;
+		std::list<Tool*> get_tools() const;
 		void set_position(Position const &pos);
+		void set_name(std::string const name);
+		std::string get_name() const;
 		void set_statistic(Statistic const &stat);
-		void take_shovel(Shovel &shovel);
+		void take_tool(Tool &tool);
 		void drop_tool(Tool &tool);
 		void use_shovel();
 		void use_hammer();
+
+		template <typename T>
+		T* get_tool()
+		{
+			std::list<Tool*>::iterator begin = _tools.begin();
+			std::list<Tool*>::iterator end = _tools.end();
+
+
+			for (std::list<Tool*>::iterator iter = begin; iter != end; iter++)
+			{
+				if (dynamic_cast<T*>(*iter) != NULL)
+				{
+					std::cout << _name << " has correct tool." << std::endl;
+					return dynamic_cast<T*>(*iter);
+				}
+			}
+			return nullptr;
+ 		}
 };
 
 #endif

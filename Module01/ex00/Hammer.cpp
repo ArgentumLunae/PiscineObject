@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/08/29 16:17:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2025/08/29 16:31:56 by mteerlin      ########   odam.nl         */
+/*   Updated: 2025/10/10 15:36:00 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 Hammer::Hammer()
 {
-	_type = "Hammer";
 	_numberOfUses = 10;
-	std::cout << "Hammer (" << _numberOfUses << ") - Default constructor" << std::endl;
+	_type = "Hammer";
+	std::cout << "\t\tHammer (" << _numberOfUses << ") - Default constructor" << std::endl;
 }
 Hammer::~Hammer() { std::cout << "Hammer - Default destructor" << std::endl; }
 
 int Hammer::use() 
 {
-	std::cout << _type << "(" << --_numberOfUses << ") - use" << std::endl;
+	std::cout << "\t\tHammer(" << --_numberOfUses << ") - use" << std::endl;
 	if (_numberOfUses <= 0)
 	{
-		std::cout << "Hammer - has broken" << std::endl;
+		std::cout << "\t\tHammer - has broken" << std::endl;
 		_heldBy->drop_tool(*this);
 		this->~Hammer();
 	}

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/08/29 16:17:48 by mteerlin      #+#    #+#                 */
-/*   Updated: 2025/11/14 16:10:06 by mteerlin      ########   odam.nl         */
+/*   Updated: 2025/11/28 14:00:03 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ Hammer::Hammer()
 {
 	_numberOfUses = 10;
 	_type = "Hammer";
-	std::cout << "Hammer (" << _numberOfUses << ") - Default constructor" << std::endl;
+	std::cout << "\t\tHammer (" << _numberOfUses << ") - Default constructor" << std::endl;
 }
-Hammer::~Hammer() { std::cout << "Hammer - Default destructor" << std::endl; }
+Hammer::~Hammer() { std::cout << "\t\tHammer - Default destructor" << std::endl; }
 
 int Hammer::use() 
 {

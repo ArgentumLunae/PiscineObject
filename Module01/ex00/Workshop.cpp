@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/10/03 15:19:36 by mteerlin      #+#    #+#                 */
-/*   Updated: 2025/11/14 16:18:14 by mteerlin      ########   odam.nl         */
+/*   Updated: 2025/11/28 14:07:00 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ bool Workshop::has_required_tools(Worker &worker)
 			case TT_HAMMER:
 				if (worker.get_tool<Hammer>() == nullptr)
 					return false;
-			default: std::cout << "Unknown Tool Type";
+			default: std::cout << "Unknown Tool Type: " << *iter << std::endl;
 		};
 	}
 	return true;
@@ -71,21 +71,32 @@ bool Workshop::has_required_tools(Worker &worker)
 
 void Workshop::add_requirement(eToolTypes type)
 {
+	std::cout << "Workshop requirement Added: " << type << std::endl;
 	_requirement.insert(type);
 }
 
 void Workshop::remove_requirement(eToolTypes type)
 {
+	std::cout << "Workshop requirement Removed: " << type << std::endl;
 	_requirement.erase(type);
 }
 
 void Workshop::register_worker(Worker &worker)
 {
-	_workers.insert(&worker);
+	if (has_required_tools(worker))
+	{
+		std::cout << "Workshop, worker registered: " << worker.get_name() << std::endl;
+		_workers.insert(&worker);
+	}
+	else
+	{
+		std::cout << "Workshop: " << worker.get_name() << " does not meet tool requirements." << std::endl;
+	}
 }
 
 void Workshop::ungegister_worker(Worker &worker)
 {
+	std::cout << "Workshop, worker unregistered: " << worker.get_name() << std::endl;
 	_workers.erase(&worker);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/08/08 13:47:49 by mteerlin      #+#    #+#                 */
-/*   Updated: 2025/11/14 16:11:24 by mteerlin      ########   odam.nl         */
+/*   Updated: 2025/11/28 14:02:31 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ class Worker
 	
 		Worker();
 		Worker(Position &pos, Statistic const &stat);
+		Worker(std::string name);
 		~Worker();
 
 		std::list<Tool*> get_tools() const;
@@ -89,7 +90,6 @@ class Worker
 			{
 				if (dynamic_cast<T*>(*iter) != NULL)
 				{
-					std::cout << "\t\t" << _name << " has correct tool." << std::endl;
 					return dynamic_cast<T*>(*iter);
 				}
 			}

@@ -6,7 +6,7 @@
 #    By: mteerlin <mteerlin@student.codam.nl>         +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/20 13:49:24 by mteerlin      #+#    #+#                  #
-#    Updated: 2025/06/12 00:11:09 by argentumlun   ########   odam.nl          #
+#    Updated: 2025/11/14 14:28:31 by mteerlin      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ C_FLAGS = -Wall -Wextra -Werror
 STD_FLAGS := -std=c++98
 SAN_FLAGS := -g -fsanitize=address
 GCC := c++
-CC = ${GCC} $(C_FLAGS) #$(STD_FLAGS) #$(SAN_FLAGS)
+CC = ${GCC} $(C_FLAGS) $(STD_FLAGS) #$(SAN_FLAGS)
 
 all: obj_dir $(NAME)
 

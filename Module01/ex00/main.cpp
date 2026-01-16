@@ -6,7 +6,7 @@
 /*   By: mteerlin <mteerlin@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2025/08/08 14:12:14 by mteerlin      #+#    #+#                 */
-/*   Updated: 2025/11/14 16:19:56 by mteerlin      ########   odam.nl         */
+/*   Updated: 2025/11/28 14:04:18 by mteerlin      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,9 @@ int main(int argc, char* argv[])
 		Shovel Steve;
 		Hammer Charles;
 
-		Worker workerA;
+		Worker workerA("Jimbob");
 		Worker workerB;
 
-		workerA.set_name("Jimbob");
 		workerB.set_name("Bobert");
 		workerA.take_tool(Steve);
 		workerA.take_tool(Charles);
@@ -88,7 +87,7 @@ int main(int argc, char* argv[])
 	if (argc == 1 || argv[1][0] == '4')
 	{
 		if (argc == 1) {std::cout << std::endl << std::endl;}
-		std::cout << "\tIV3 : " << std::endl;
+		std::cout << "\tIV4 : " << std::endl;
 
 		std::set<eToolTypes> workshopReqs1;
 		workshopReqs1.insert(TT_HAMMER);
@@ -98,6 +97,27 @@ int main(int argc, char* argv[])
 		
 		workshop2.add_requirement(TT_SHOVEL);
 		workshop2.add_requirement(TT_HAMMER);
+
+		Worker WorkerA("Aerdwyn");
+		Worker WorkerB("Morgan");
+
+		Shovel Shoffy;
+		Shovel DirtMover200;
+		Hammer HamMan;
+		Hammer ManHam;
+
+		WorkerA.take_tool(Shoffy);
+		WorkerB.take_tool(HamMan);
+
+		workshop1.register_worker(WorkerA);
+		workshop1.register_worker(WorkerB);
+		workshop2.register_worker(WorkerA);
+		workshop2.register_worker(WorkerB);
+
+		WorkerA.take_tool(HamMan);
+
+		workshop1.executeWorkDay();
+		workshop2.executeWorkDay();
 	}
 	return 0;
 }
